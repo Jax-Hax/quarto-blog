@@ -1,0 +1,72 @@
+---
+title: "Getting started with a Quarto blog"
+author: "Jax Bulbrook"
+date: "2023-07-17"
+categories: [tutorial]
+---
+
+The best way to stay motivated during your journey into learning to code (or anything really) is to tell people about it. Keep yourself accountable. Editing youtube videos may be too much for you (like it is for me) so I recommend blogging. Not just a simple Medium blog, though, although if that's all you need then go right ahead. This is blogging specifically for coding, so you can show off the actual code and its results, allowing anyone to see how you did what you did.
+
+If you need convincing, take a look at [this article by Rachel Thomas](https://medium.com/@racheltho/why-you-yes-you-should-blog-7d2544ac1045)
+
+Now, onto how to do so. This is assuming you have a personal computer that you want to run your blog on, with no experience or coding tools installed. 
+
+We are going to use Jupyter Labs with Quarto for the actual articles.
+
+# Installing Git
+Git is a version control system, so that if your computer breaks you have all of your code backed up to the cloud. We are going to use it with Github. You should already have it if you use Linux, but if you use Windows you are going to have to set up Windows Subsystem for Linux. You can run normal Windows with [Git for Windows](https://gitforwindows.org/) if you really want to, but most of this tutorial won't work for you, and you will have a lot of troubles later on. To install WSL, go to 31:29 on [Lesson 2 of the FastAI course](https://course.fast.ai/Lessons/lesson2.html), they have a good tutorial on how to do it.
+
+# Installing Python with Mamba
+We are going to use fastsetup, an easy way to get your computer set up for programming with Python. The [setup-conda.sh file](https://github.com/fastai/fastsetup/blob/master/setup-conda.sh) shown here is what we will use to download everything. To get some experience with Git, try cloning the repository on your own. For some help, here are the commands: 
+```
+sudo apt update && sudo apt -y install git
+git clone https://github.com/fastai/fastsetup.git
+cd fastsetup
+sudo ./setup-conda.sh
+# optionally, for installing the FastAI library and other things like PyTorch
+mamba install -c fastchan fastai
+```
+If you want the full install for Ubuntu Linux, you can also read the README of the repository.
+
+### Installing Jupyter Labs and Quarto
+`mamba install -c conda-forge jupyterlab`
+To install Quarto, go to [their download page](https://quarto.org/docs/get-started/) and download the correct version and run it.
+
+# Setting up the blog
+Go to the terminal, and navigate to the location you want to put the Blog in via `cd`. I'm simply in the Documents folder. Then, to make a new Quarto project, run `quarto create-project Blog --type website:blog`. Now you should see a Blog folder if you run `ls`.
+To see the blog itself, run `quarto preview Blog` and it should pop up in a new window.
+That terminal is now being used to run quarto, so open up another one and navigate to the Blog folder (go into it this time). Run the command `jupyter lab` to open up your IDE. You should now see the whole folder in the Jupyter Lab Development Environment. Here you can change some of the Quarto files, such as `about.qmd`, `index.qmd`, etc. I have the superhero theme set in `_quarto.yml'.
+
+![Jupyter Lab](jupyter.jpg)
+
+To make it look a little bit better, we need to change some default settings. Go to the Plugins tab (the puzzle icon on the left sidebar) and search git. Download the jupyterlab git plugin. Also look up and install LSP (language server protocol) and quarto. 
+
+To change to dark mode, go to Settings in the top navbar, then Theme, then choose Dark. Now, you need to restart Jupyter Lab to make the plugins go into effect. Go to File, then Shut down at the bottom. Run the same commands as above to open Jupyter Lab back up. You should now see roughly the same screen shown above, without the two tabs.
+
+# Setting up GitHub
+You will need a Github account to back up the Blog. Go ahead and create one on their website, setting up a profile as usual. After, make a new repository called Blog (or whatever else). Do not add a README or license or anything yet.
+
+In the JupyterLab main screen, make a new tab and use Terminal (shown in Other). In that, run the following commands, replacing information as needed:
+```
+git config ‒global user.email {your Github email}
+git config user.name {your Github name}
+git init -b main
+git add .
+git commit -m "added blog files"
+git remote add origin https://github.com/{your profile name}/blog.git 
+git push ‒set-upstream origin main
+```
+You should now be able to add new files and commit them to Github from the sidebar.
+Now change some default settings with Git to make it easier to push your changes. Go to Advanced Settings Editor (Ctrl comma), then Git, then change simple staging flag to true and trigger push on commit to true.
+
+# Publishing the Blog
+If you just want it for yourself, you can stop the tutorial here and start editing. Use a Quarto guide online to do so. If you do want to publish it, there are two options. Well, there are many, but these are the top two in my opinion.
+
+### The simplest, publishing to Quarto Pub
+This one is for people with no web development experience. Go to [Quarto Pub](https://quartopub.com/), sign up, and choose a username. Now, go back to the terminal, navigate to the blog directory, and run `quarto publish` once you are ready for you blog to hit the world. It will ask you to put in some authentication information the first time, and then you are done!
+
+### The hard option, making your own website
+I won't go too deep into this, as you should be experienced with Web Dev to do this option. I suggest using something like Vercel to deploy a simple static application with all of the prerendered files you get using `quarto render`.
+
+# You are done!
+If you successfully made it through, please email me at jaxbulbrook@gmail.com and I will take a look at your blog! For ideas to post, I suggest doing a 100 days of X challenge (I am personally reading 100 papers in 100 days) or documenting your coding journey with weekly devlogs. Enjoy!

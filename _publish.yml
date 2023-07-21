@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: 44fc78bd-43d3-4ef3-a604-8a86206b6148
+      url: 'https://jax-bulbrook.quarto.pub/blog'

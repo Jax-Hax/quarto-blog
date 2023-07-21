@@ -1,0 +1,13 @@
+---
+title: "About Jax Bulbrook"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/Jax-Hax
+
+---
+
+This is where I post all of my discoveries along my coding journey, to keep me accountable. Currently doing deep learning, but I'm always doing something new, so you never know.

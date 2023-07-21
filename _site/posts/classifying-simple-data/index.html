@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jax Bulbrook">
+<meta name="dcterms.date" content="2023-07-18">
+
+<title>Blog - Using a neural network to predict poisonous fruit</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About Jax Bulbrook</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Using a neural network to predict poisonous fruit</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">project</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Jax Bulbrook </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 18, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>I recently watched an interesting <a href="https://www.youtube.com/watch?v=hfMk-kjRv4c">video by Sebastian Lague</a> where he classifies random data using a neural network from scratch. I’m not quite good enough at calculus to do all of that, but I think I can pull it off with PyTorch. I am going to try and initialize some data, then classify a line that divides the data. That will actually be the hardest part, as I am still a novice at data science.</p>
+<section id="plotting-the-data" class="level1">
+<h1>Plotting the data</h1>
+<div class="cell" data-tags="[]" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'_mpl-gallery'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_ans(x, is_above):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> correct_ans(x)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> is_above:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.random.uniform(y, y <span class="op">+</span> <span class="dv">15</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.random.uniform(y, y <span class="op">-</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> correct_ans(x):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.5</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span><span class="op">-</span><span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> <span class="op">-</span><span class="dv">25</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>stop <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>num_points <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>blueX <span class="op">=</span> np.linspace(start,stop,num_points)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>redX <span class="op">=</span> np.linspace(start,stop,num_points)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>blueY <span class="op">=</span> random_ans(blueX,<span class="va">True</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>redY <span class="op">=</span> random_ans(redX,<span class="va">False</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>actualY <span class="op">=</span> correct_ans(blueX)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ax.scatter(blueX, blueY, c<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>ax.scatter(redX, redY, c<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax.plot(blueX, actualY, linewidth<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlim<span class="op">=</span>(start, stop), xticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>           ylim<span class="op">=</span>(np.<span class="bu">min</span>(redY), np.<span class="bu">max</span>(blueY)), yticks<span class="op">=</span>np.arange(np.<span class="bu">min</span>(redY), np.<span class="bu">max</span>(blueY),<span class="dv">10</span>))</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="that-seems-to-have-made-them-too-close-to-the-line.-i-want-them-to-be-spread-out-evenly-like-the-video-so-i-will-just-generate-random-numbers-then-assign-them-based-on-whether-they-are-above-or-below." class="level1">
+<h1>that seems to have made them too close to the line. I want them to be spread out evenly, like the video, so I will just generate random numbers then assign them based on whether they are above or below.</h1>
+<div class="cell" data-tags="[]" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classify(x,y):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(blue,x[idx]) <span class="cf">for</span> idx,blue <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> blue <span class="op">&gt;</span> correct_ans(x[idx])], [(red,x[idx]) <span class="cf">for</span> idx,red <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> red <span class="op">&lt;</span> correct_ans(x[idx])]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> <span class="op">-</span><span class="dv">25</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>stop <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>num_points <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.randint(start,stop,num_points)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.random.randint(start,stop,num_points)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>blue,red <span class="op">=</span> classify(x,y)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>blueY,blueX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>blue)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>redY, redX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>red)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>actualX <span class="op">=</span> np.linspace(start,stop,num_points)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>actualY <span class="op">=</span> correct_ans(actualX)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>ax.scatter(blueX, blueY, c<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>ax.scatter(redX, redY, c<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>ax.plot(actualX,actualY, linewidth<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlim<span class="op">=</span>(start, stop), xticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>),</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>           ylim<span class="op">=</span>(start, stop), yticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>))</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="if-im-being-honest-the-reason-that-wasnt-commented-is-because-i-barely-understand-it.-i-spent-an-hour-trying-to-make-those-functions-work-still-trying-to-learn-numpy.-so-just-look-up-the-functions-yourselves-if-you-want-to-see-what-they-do-it-was-mostly-chatgpts-work." class="level4">
+<h4 class="anchored" data-anchor-id="if-im-being-honest-the-reason-that-wasnt-commented-is-because-i-barely-understand-it.-i-spent-an-hour-trying-to-make-those-functions-work-still-trying-to-learn-numpy.-so-just-look-up-the-functions-yourselves-if-you-want-to-see-what-they-do-it-was-mostly-chatgpts-work.">If I’m being honest, the reason that wasn’t commented is because I barely understand it. I spent an hour trying to make those functions work… Still trying to learn numpy. So just look up the functions yourselves if you want to see what they do, it was mostly ChatGPT’s work.</h4>
+</section>
+</section>
+<section id="onto-the-model-read-the-math-classifier-if-you-havent-already-it-should-explain-most-of-what-is-coming" class="level1">
+<h1>Onto the model! Read the math classifier if you haven’t already, it should explain most of what is coming</h1>
+<div class="cell" data-tags="[]" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="89">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear1 <span class="op">=</span> nn.Linear(<span class="dv">2</span>, <span class="dv">64</span>)  <span class="co"># Input size: 2 (x and y), Output size: 64</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear2 <span class="op">=</span> nn.Linear(<span class="dv">64</span>, <span class="dv">1</span>)  <span class="co"># Input size: 64, Output size: 1</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.relu <span class="op">=</span> nn.ReLU()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, xy):</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply the first linear layer followed by the ReLU activation</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.relu(<span class="va">self</span>.linear1(xy))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply the second linear layer</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.linear2(output)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nn.functional.normalize(output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="now-we-need-a-way-to-display-all-the-predicted-values-for-the-graph.-i-am-going-to-use-a-pilimage-and-set-each-pixel-to-either-blue-or-red-according-to-the-models-predictions.-there-may-be-a-simpler-way-but-this-seems-fun." class="level1">
+<h1>Now we need a way to display all the predicted values for the graph. I am going to use a PILImage, and set each pixel to either blue or red according to the model’s predictions. There may be a simpler way, but this seems fun.</h1>
+<div class="cell" data-tags="[]" data-execution_count="90">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>output_image <span class="op">=</span> Image.new(<span class="st">'RGB'</span>, (<span class="dv">100</span>, <span class="dv">100</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate x and y coordinate arrays</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">101</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">101</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Use meshgrid to create 2D arrays for every combination</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(x, y)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Flatten the 2D arrays to get the final x and y coordinate arrays</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>x_coords <span class="op">=</span> torch.from_numpy(X.flatten())</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>y_coords <span class="op">=</span> torch.from_numpy(Y.flatten()).to(torch.float32)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Stack 'x' and 'y' along the last dimension to create a single tensor with shape (batch_size, 2)</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>xy <span class="op">=</span> torch.stack((x_coords, y_coords), dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> Net()</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> net(xy)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> preds[row<span class="op">*</span>col] <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Set the pixel to blue (255, 0, 0)</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>            output_image.putpixel((col, row), (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>))</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Set the pixel to red (0, 0, 255)</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>            output_image.putpixel((col, row), (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>plt.imshow(output_image)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="91">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Seperate into function</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize_preds(net):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    preds <span class="op">=</span> net(xy)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> preds[row<span class="op">*</span>col] <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Set the pixel to blue (255, 0, 0)</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                output_image.putpixel((col, row), (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Set the pixel to red (0, 0, 255)</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                output_image.putpixel((col, row), (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    plt.imshow(output_image)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="92">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>visualize_preds(net)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-12-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="ok-there-is-the-output-of-the-image.-lets-try-training-the-model-to-see-if-we-can-get-a-better-output-that-looks-more-like-the-function." class="level1">
+<h1>Ok, there is the output of the image. Let’s try training the model, to see if we can get a better output that looks more like the function.</h1>
+<section id="dataset-initilization" class="level4">
+<h4 class="anchored" data-anchor-id="dataset-initilization">Dataset initilization</h4>
+<div class="cell" data-tags="[]" data-execution_count="93">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>xy.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="93">
+<pre><code>torch.Size([10000, 2])</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="94">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> correct_ans_tensor(x,y):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.5</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span><span class="op">-</span><span class="dv">5</span> <span class="op">&lt;</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="95">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>correctValues <span class="op">=</span> correct_ans_tensor(x_coords,y_coords)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>correctValues.shape</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>correctValues[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="95">
+<pre><code>tensor(True)</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="96">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>criterion <span class="op">=</span> nn.CrossEntropyLoss()</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> optim.SGD(net.parameters(), lr<span class="op">=</span><span class="fl">0.001</span>, momentum<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>correctValues <span class="op">=</span> correctValues.<span class="bu">float</span>()</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> torch.utils.data.TensorDataset(xy, correctValues)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>data_loader <span class="op">=</span> torch.utils.data.DataLoader(dataset, batch_size<span class="op">=</span><span class="dv">64</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="97">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):  <span class="co"># loop over the dataset multiple times</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    running_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, data <span class="kw">in</span> <span class="bu">enumerate</span>(data_loader, <span class="dv">0</span>):</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># get the inputs; data is a list of [inputs, labels]</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        inputs, labels <span class="op">=</span> data[<span class="dv">0</span>], data[<span class="dv">1</span>]</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># zero the parameter gradients</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        optimizer.zero_grad()</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># forward + backward + optimize</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> net(inputs)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> criterion(outputs.squeeze(), labels)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print statistics</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        running_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">99</span>:    <span class="co"># print every 2000 mini-batches</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f'[</span><span class="sc">{</span>epoch <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">:5d}</span><span class="ss">] loss: </span><span class="sc">{</span>running_loss <span class="op">/</span> <span class="dv">2000</span><span class="sc">:.3f}</span><span class="ss">'</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>            running_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Finished Training'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1,   100] loss: 1.040
+[2,   100] loss: 1.040
+[3,   100] loss: 1.040
+[4,   100] loss: 1.040
+[5,   100] loss: 1.040
+[6,   100] loss: 1.040
+[7,   100] loss: 1.040
+[8,   100] loss: 1.040
+[9,   100] loss: 1.040
+[10,   100] loss: 1.040
+Finished Training</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="98">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>net(torch.tensor([[<span class="fl">0.</span>, <span class="op">-</span><span class="fl">2.</span>], [<span class="fl">3.</span>, <span class="fl">0.</span>]]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="98">
+<pre><code>tensor([[-1.],
+        [ 1.]], grad_fn=&lt;DivBackward0&gt;)</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="99">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>visualize_preds(net)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-19-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="ok-something-went-wrong-here.-it-seems-to-be-outputting-roughly-the-same-thing-so-either-my-training-went-wrong-or-my-image-output-is-wrong" class="level1">
+<h1>Ok, something went wrong here. It seems to be outputting roughly the same thing, so either my training went wrong or my image output is wrong</h1>
+<div class="cell" data-tags="[]" data-execution_count="108">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using pyplotlib to check</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> <span class="op">-</span><span class="dv">25</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>stop <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>num_points <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.from_numpy(np.random.randint(start,stop,num_points))</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.from_numpy(np.random.randint(start,stop,num_points))</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>xy <span class="op">=</span> torch.stack((x, y), dim<span class="op">=-</span><span class="dv">1</span>).<span class="bu">float</span>()</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> net(xy)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>blue, red <span class="op">=</span> [(blue,x[idx]) <span class="cf">for</span> idx,blue <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> <span class="fl">1.</span> <span class="op">==</span> predictions[idx]], [(red,x[idx]) <span class="cf">for</span> idx,red <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> <span class="op">-</span><span class="fl">1.</span> <span class="op">==</span> predictions[idx]]</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>blueY,blueX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>blue)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>redY, redX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>red)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>actualX <span class="op">=</span> np.linspace(start,stop,num_points)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>actualY <span class="op">=</span> correct_ans(actualX)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>ax.scatter(blueX, blueY, c<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>ax.scatter(redX, redY, c<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>ax.plot(actualX,actualY, linewidth<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlim<span class="op">=</span>(start, stop), xticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>),</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>           ylim<span class="op">=</span>(start, stop), yticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>))</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-20-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="hmm-that-didnt-work-too-well.-maybe-theres-an-issue-with-the-training-data-ill-try-doing-it-with-all-the-points-instead" class="level1">
+<h1>Hmm, that didn’t work too well. Maybe there’s an issue with the training data? I’ll try doing it with all the points instead</h1>
+<div class="cell" data-tags="[]" data-execution_count="109">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>correctValues <span class="op">=</span> correct_ans_tensor(x_coords,y_coords)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>criterion <span class="op">=</span> nn.CrossEntropyLoss()</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> optim.SGD(net.parameters(), lr<span class="op">=</span><span class="fl">0.001</span>, momentum<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>correctValues <span class="op">=</span> correctValues.<span class="bu">float</span>()</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> torch.utils.data.TensorDataset(xy, correctValues)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>data_loader <span class="op">=</span> torch.utils.data.DataLoader(dataset, batch_size<span class="op">=</span><span class="dv">64</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>AssertionError: Size mismatch between tensors</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="110">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>xy.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="110">
+<pre><code>torch.Size([500, 2])</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="111">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>correctValues.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="111">
+<pre><code>torch.Size([10000])</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="113">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>correctValues <span class="op">=</span> correct_ans_tensor(x,y) <span class="co"># corrected to x,y</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>criterion <span class="op">=</span> nn.CrossEntropyLoss()</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> optim.SGD(net.parameters(), lr<span class="op">=</span><span class="fl">0.001</span>, momentum<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>correctValues <span class="op">=</span> correctValues.<span class="bu">float</span>()</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> torch.utils.data.TensorDataset(xy, correctValues)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>data_loader <span class="op">=</span> torch.utils.data.DataLoader(dataset, batch_size<span class="op">=</span><span class="dv">64</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="123">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):  <span class="co"># loop over the dataset multiple times</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    running_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, data <span class="kw">in</span> <span class="bu">enumerate</span>(data_loader, <span class="dv">0</span>):</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># get the inputs; data is a list of [inputs, labels]</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        inputs, labels <span class="op">=</span> data[<span class="dv">0</span>], data[<span class="dv">1</span>]</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># zero the parameter gradients</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        optimizer.zero_grad()</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># forward + backward + optimize</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> net(inputs)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> criterion(outputs.squeeze(), labels)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print statistics</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>        running_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">16</span> <span class="op">==</span> <span class="dv">1</span>:    <span class="co"># print every 2000 mini-batches</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f'[</span><span class="sc">{</span>epoch <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">:5d}</span><span class="ss">] loss: </span><span class="sc">{</span>running_loss <span class="op">/</span> <span class="dv">2000</span><span class="sc">:.3f}</span><span class="ss">'</span>)</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>            running_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Finished Training'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1,     2] loss: 0.024
+[2,     2] loss: 0.024
+[3,     2] loss: 0.024
+[4,     2] loss: 0.024
+[5,     2] loss: 0.024
+[6,     2] loss: 0.024
+[7,     2] loss: 0.024
+[8,     2] loss: 0.024
+[9,     2] loss: 0.024
+[10,     2] loss: 0.024
+[11,     2] loss: 0.024
+[12,     2] loss: 0.024
+[13,     2] loss: 0.024
+[14,     2] loss: 0.024
+[15,     2] loss: 0.024
+[16,     2] loss: 0.024
+[17,     2] loss: 0.024
+[18,     2] loss: 0.024
+[19,     2] loss: 0.024
+[20,     2] loss: 0.024
+[21,     2] loss: 0.024
+[22,     2] loss: 0.024
+[23,     2] loss: 0.024
+[24,     2] loss: 0.024
+[25,     2] loss: 0.024
+[26,     2] loss: 0.024
+[27,     2] loss: 0.024
+[28,     2] loss: 0.024
+[29,     2] loss: 0.024
+[30,     2] loss: 0.024
+[31,     2] loss: 0.024
+[32,     2] loss: 0.024
+[33,     2] loss: 0.024
+[34,     2] loss: 0.024
+[35,     2] loss: 0.024
+[36,     2] loss: 0.024
+[37,     2] loss: 0.024
+[38,     2] loss: 0.024
+[39,     2] loss: 0.024
+[40,     2] loss: 0.024
+[41,     2] loss: 0.024
+[42,     2] loss: 0.024
+[43,     2] loss: 0.024
+[44,     2] loss: 0.024
+[45,     2] loss: 0.024
+[46,     2] loss: 0.024
+[47,     2] loss: 0.024
+[48,     2] loss: 0.024
+[49,     2] loss: 0.024
+[50,     2] loss: 0.024
+[51,     2] loss: 0.024
+[52,     2] loss: 0.024
+[53,     2] loss: 0.024
+[54,     2] loss: 0.024
+[55,     2] loss: 0.024
+[56,     2] loss: 0.024
+[57,     2] loss: 0.024
+[58,     2] loss: 0.024
+[59,     2] loss: 0.024
+[60,     2] loss: 0.024
+[61,     2] loss: 0.024
+[62,     2] loss: 0.024
+[63,     2] loss: 0.024
+[64,     2] loss: 0.024
+[65,     2] loss: 0.024
+[66,     2] loss: 0.024
+[67,     2] loss: 0.024
+[68,     2] loss: 0.024
+[69,     2] loss: 0.024
+[70,     2] loss: 0.024
+[71,     2] loss: 0.024
+[72,     2] loss: 0.024
+[73,     2] loss: 0.024
+[74,     2] loss: 0.024
+[75,     2] loss: 0.024
+[76,     2] loss: 0.024
+[77,     2] loss: 0.024
+[78,     2] loss: 0.024
+[79,     2] loss: 0.024
+[80,     2] loss: 0.024
+[81,     2] loss: 0.024
+[82,     2] loss: 0.024
+[83,     2] loss: 0.024
+[84,     2] loss: 0.024
+[85,     2] loss: 0.024
+[86,     2] loss: 0.024
+[87,     2] loss: 0.024
+[88,     2] loss: 0.024
+[89,     2] loss: 0.024
+[90,     2] loss: 0.024
+[91,     2] loss: 0.024
+[92,     2] loss: 0.024
+[93,     2] loss: 0.024
+[94,     2] loss: 0.024
+[95,     2] loss: 0.024
+[96,     2] loss: 0.024
+[97,     2] loss: 0.024
+[98,     2] loss: 0.024
+[99,     2] loss: 0.024
+[100,     2] loss: 0.024
+Finished Training</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="124">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using pyplotlib to check</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> <span class="op">-</span><span class="dv">25</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>stop <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>num_points <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.from_numpy(np.random.randint(start,stop,num_points))</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.from_numpy(np.random.randint(start,stop,num_points))</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>xy <span class="op">=</span> torch.stack((x, y), dim<span class="op">=-</span><span class="dv">1</span>).<span class="bu">float</span>()</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> net(xy)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>blue, red <span class="op">=</span> [(blue,x[idx]) <span class="cf">for</span> idx,blue <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> <span class="fl">1.</span> <span class="op">==</span> predictions[idx]], [(red,x[idx]) <span class="cf">for</span> idx,red <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> <span class="op">-</span><span class="fl">1.</span> <span class="op">==</span> predictions[idx]]</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>blueY,blueX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>blue)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>redY, redX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>red)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>actualX <span class="op">=</span> np.linspace(start,stop,num_points)</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>actualY <span class="op">=</span> correct_ans(actualX)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>ax.scatter(blueX, blueY, c<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>ax.scatter(redX, redY, c<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>ax.plot(actualX,actualY, linewidth<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlim<span class="op">=</span>(start, stop), xticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>),</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>           ylim<span class="op">=</span>(start, stop), yticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>))</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="ok-something-is-100-wrong-with-my-model.-maybe-adding-more-layers-will-do-the-trick." class="level1">
+<h1>Ok, something is 100% wrong with my model. Maybe adding more layers will do the trick.</h1>
+<div class="cell" data-tags="[]" data-execution_count="125">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear1 <span class="op">=</span> nn.Linear(<span class="dv">2</span>, <span class="dv">64</span>)  <span class="co"># Input size: 2 (x and y), Output size: 64</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear2 <span class="op">=</span> nn.Linear(<span class="dv">64</span>, <span class="dv">128</span>)  <span class="co"># Input size: 64, Output size: 128</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear3 <span class="op">=</span> nn.Linear(<span class="dv">128</span>, <span class="dv">1</span>)  <span class="co"># Input size: 128, Output size: 1</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.relu <span class="op">=</span> nn.ReLU()</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, xy):</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply the first linear layer followed by the ReLU activation</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.relu(<span class="va">self</span>.linear1(xy))</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply the second linear layer followed by the ReLU activation</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.relu(<span class="va">self</span>.linear2(output))</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply the third linear layer</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.linear3(output)</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nn.functional.normalize(output)</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> Net()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="132">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):  <span class="co"># loop over the dataset multiple times</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    running_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, data <span class="kw">in</span> <span class="bu">enumerate</span>(data_loader, <span class="dv">0</span>):</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># get the inputs; data is a list of [inputs, labels]</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>        inputs, labels <span class="op">=</span> data[<span class="dv">0</span>], data[<span class="dv">1</span>]</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># zero the parameter gradients</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        optimizer.zero_grad()</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># forward + backward + optimize</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> net(inputs)</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> criterion(outputs.squeeze(), labels)</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print statistics</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>        running_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">128</span> <span class="op">==</span> <span class="dv">8</span>:    <span class="co"># print every 2000 mini-batches</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f'[</span><span class="sc">{</span>epoch <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">:5d}</span><span class="ss">] loss: </span><span class="sc">{</span>running_loss <span class="op">/</span> <span class="dv">2000</span><span class="sc">:.3f}</span><span class="ss">'</span>)</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>            running_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Finished Training'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Finished Training</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="133">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using pyplotlib to check</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> <span class="op">-</span><span class="dv">25</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>stop <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>num_points <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.from_numpy(np.random.randint(start,stop,num_points))</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.from_numpy(np.random.randint(start,stop,num_points))</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>xy <span class="op">=</span> torch.stack((x, y), dim<span class="op">=-</span><span class="dv">1</span>).<span class="bu">float</span>()</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> net(xy)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>blue, red <span class="op">=</span> [(blue,x[idx]) <span class="cf">for</span> idx,blue <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> <span class="fl">1.</span> <span class="op">==</span> predictions[idx]], [(red,x[idx]) <span class="cf">for</span> idx,red <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> <span class="op">-</span><span class="fl">1.</span> <span class="op">==</span> predictions[idx]]</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>blueY,blueX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>blue)</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>redY, redX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>red)</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>actualX <span class="op">=</span> np.linspace(start,stop,num_points)</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>actualY <span class="op">=</span> correct_ans(actualX)</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>ax.scatter(blueX, blueY, c<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>ax.scatter(redX, redY, c<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>ax.plot(actualX,actualY, linewidth<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlim<span class="op">=</span>(start, stop), xticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>),</span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>           ylim<span class="op">=</span>(start, stop), yticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>))</span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-29-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="much-more-promising-it-seems-like-the-problem-is-that-it-doesnt-have-enough-layers-which-is-odd-because-it-seems-like-an-easy-function-but-i-guess-not." class="level1">
+<h1>Much more promising! It seems like the problem is that it doesn’t have enough layers, which is odd because it seems like an easy function, but I guess not.</h1>
+<div class="cell" data-tags="[]" data-execution_count="135">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear1 <span class="op">=</span> nn.Linear(<span class="dv">2</span>, <span class="dv">256</span>)  <span class="co"># Input size: 2 (x and y), Output size: 256</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear2 <span class="op">=</span> nn.Linear(<span class="dv">256</span>, <span class="dv">128</span>)  <span class="co"># Input size: 256, Output size: 128</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear3 <span class="op">=</span> nn.Linear(<span class="dv">128</span>, <span class="dv">64</span>)  <span class="co"># Input size: 128, Output size: 64</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear4 <span class="op">=</span> nn.Linear(<span class="dv">64</span>, <span class="dv">1</span>)  <span class="co"># Input size: 64, Output size: 1</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.relu <span class="op">=</span> nn.ReLU()</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, xy):</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply the first linear layer followed by the ReLU activation</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.relu(<span class="va">self</span>.linear1(xy))</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply the second linear layer followed by the ReLU activation</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.relu(<span class="va">self</span>.linear2(output))</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply the third linear layer followed by the ReLU activation</span></span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.relu(<span class="va">self</span>.linear3(output))</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply the fourth linear layer</span></span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.linear4(output)</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nn.functional.normalize(output)</span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> Net()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="136">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):  <span class="co"># loop over the dataset multiple times</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    running_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, data <span class="kw">in</span> <span class="bu">enumerate</span>(data_loader, <span class="dv">0</span>):</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># get the inputs; data is a list of [inputs, labels]</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>        inputs, labels <span class="op">=</span> data[<span class="dv">0</span>], data[<span class="dv">1</span>]</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># zero the parameter gradients</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>        optimizer.zero_grad()</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># forward + backward + optimize</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> net(inputs)</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> criterion(outputs.squeeze(), labels)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print statistics</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>        running_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">128</span> <span class="op">==</span> <span class="dv">8</span>:    <span class="co"># print every 2000 mini-batches</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f'[</span><span class="sc">{</span>epoch <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">:5d}</span><span class="ss">] loss: </span><span class="sc">{</span>running_loss <span class="op">/</span> <span class="dv">2000</span><span class="sc">:.3f}</span><span class="ss">'</span>)</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>            running_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Finished Training'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Finished Training</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="137">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using pyplotlib to check</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> <span class="op">-</span><span class="dv">25</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>stop <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>num_points <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.from_numpy(np.random.randint(start,stop,num_points))</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.from_numpy(np.random.randint(start,stop,num_points))</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>xy <span class="op">=</span> torch.stack((x, y), dim<span class="op">=-</span><span class="dv">1</span>).<span class="bu">float</span>()</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> net(xy)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>blue, red <span class="op">=</span> [(blue,x[idx]) <span class="cf">for</span> idx,blue <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> <span class="fl">1.</span> <span class="op">==</span> predictions[idx]], [(red,x[idx]) <span class="cf">for</span> idx,red <span class="kw">in</span> <span class="bu">enumerate</span>(y) <span class="cf">if</span> <span class="op">-</span><span class="fl">1.</span> <span class="op">==</span> predictions[idx]]</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>blueY,blueX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>blue)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>redY, redX <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>red)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>actualX <span class="op">=</span> np.linspace(start,stop,num_points)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>actualY <span class="op">=</span> correct_ans(actualX)</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>ax.scatter(blueX, blueY, c<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>ax.scatter(redX, redY, c<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>ax.plot(actualX,actualY, linewidth<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlim<span class="op">=</span>(start, stop), xticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>),</span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>           ylim<span class="op">=</span>(start, stop), yticks<span class="op">=</span>np.arange(start, stop,<span class="dv">5</span>))</span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-32-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="oh-a-bit-too-far.-well-i-guess-this-was-a-good-introduction-to-more-pytorch-but-i-am-going-to-have-to-end-here.-ive-been-tearing-my-hair-out-for-hours-and-i-need-to-read-the-daily-scientific-paper" class="level1">
+<h1>oh… a bit too far. Well, I guess this was a good introduction to more PyTorch, but I am going to have to end here. I’ve been tearing my hair out for hours, and I need to read the daily scientific paper!</h1>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

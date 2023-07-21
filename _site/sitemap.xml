@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/index.html</loc>
+    <lastmod>2023-07-19T23:49:19.618Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/classifying-simple-data/index.html</loc>
+    <lastmod>2023-07-19T23:49:18.898Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html</loc>
+    <lastmod>2023-07-19T23:49:18.202Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/pytorch-function-classifier/index.html</loc>
+    <lastmod>2023-07-19T23:49:17.474Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/100-papers-100-days/index.html</loc>
+    <lastmod>2023-07-19T23:49:17.158Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/making-a-blog/index.html</loc>
+    <lastmod>2023-07-19T23:49:17.822Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/attention-is-all-you-need/index.html</loc>
+    <lastmod>2023-07-19T23:49:18.478Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/about.html</loc>
+    <lastmod>2023-07-19T23:49:19.090Z</lastmod>
+  </url>
+</urlset>

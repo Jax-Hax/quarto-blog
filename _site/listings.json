@@ -1,0 +1,13 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/attention-is-all-you-need/index.html",
+      "/posts/pytorch-function-classifier/index.html",
+      "/posts/classifying-simple-data/index.html",
+      "/posts/100-papers-100-days/index.html",
+      "/posts/making-a-blog/index.html",
+      "/posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html"
+    ]
+  }
+]

@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/visualizing-convnets/index.html",
       "/posts/attention-is-all-you-need/index.html",
       "/posts/pytorch-function-classifier/index.html",
       "/posts/classifying-simple-data/index.html",

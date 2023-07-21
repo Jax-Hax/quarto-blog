@@ -2,34 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/index.html</loc>
-    <lastmod>2023-07-19T23:49:19.618Z</lastmod>
+    <lastmod>2023-07-21T14:38:23.497Z</lastmod>
   </url>
   <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/classifying-simple-data/index.html</loc>
-    <lastmod>2023-07-19T23:49:18.898Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html</loc>
-    <lastmod>2023-07-19T23:49:18.202Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/pytorch-function-classifier/index.html</loc>
-    <lastmod>2023-07-19T23:49:17.474Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/100-papers-100-days/index.html</loc>
-    <lastmod>2023-07-19T23:49:17.158Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/making-a-blog/index.html</loc>
-    <lastmod>2023-07-19T23:49:17.822Z</lastmod>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/visualizing-convnets/index.html</loc>
+    <lastmod>2023-07-21T14:38:22.765Z</lastmod>
   </url>
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/posts/attention-is-all-you-need/index.html</loc>
-    <lastmod>2023-07-19T23:49:18.478Z</lastmod>
+    <lastmod>2023-07-21T14:38:22.089Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/making-a-blog/index.html</loc>
+    <lastmod>2023-07-21T14:38:21.457Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/100-papers-100-days/index.html</loc>
+    <lastmod>2023-07-21T14:38:20.785Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/pytorch-function-classifier/index.html</loc>
+    <lastmod>2023-07-21T14:38:21.129Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html</loc>
+    <lastmod>2023-07-21T14:38:21.825Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/classifying-simple-data/index.html</loc>
+    <lastmod>2023-07-21T14:38:22.513Z</lastmod>
   </url>
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/about.html</loc>
-    <lastmod>2023-07-19T23:49:19.090Z</lastmod>
+    <lastmod>2023-07-21T14:38:22.969Z</lastmod>
   </url>
 </urlset>

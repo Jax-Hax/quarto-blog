@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jax Bulbrook">
-<meta name="dcterms.date" content="2023-07-25">
+<meta name="dcterms.date" content="2023-08-01">
 
-<title>Blog - MicroGrad from Scratch with Andrej Karpathy’s tutorial</title>
+<title>Blog - MakeMore from Scratch</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -142,7 +142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">MicroGrad from Scratch with Andrej Karpathy’s tutorial</h1>
+      <h1 class="title">MakeMore from Scratch</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">project</div>
               </div>
@@ -162,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">July 25, 2023</p>
+        <p class="date">August 1, 2023</p>
       </div>
     </div>
     
@@ -180,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>I want to learn how Transformers work in depth, but I need a bit of background first. I am going to do all of the tutorials on Andrej Karpathy’s channel, starting with <a href="https://www.youtube.com/watch?v=VMj-3S1tku0">this micrograd from scratch one</a>. That should give me enough background to understand his latest GPT from Scratch tutorial!</p>
+<p>Makemore is a model that will make… more, of what you are inputing. This is following a <a href="https://www.youtube.com/watch?v=PaCmpygFfXo&amp;t=17s">tutorial from Andrej Karpathy</a>.</p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Value:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,data,_children<span class="op">=</span>(),_op<span class="op">=</span><span class="st">''</span>,label<span class="op">=</span><span class="st">''</span>): <span class="co">#the data is the value, we need children to store the children passed into functions like add and mult, and op to show the operations that came up with those children.</span></span>

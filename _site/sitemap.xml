@@ -2,74 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/index.html</loc>
-    <lastmod>2023-07-30T21:39:43.892Z</lastmod>
+    <lastmod>2023-08-02T19:55:55.909Z</lastmod>
   </url>
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/posts/visualizing-convnets/index.html</loc>
-    <lastmod>2023-07-30T21:39:42.784Z</lastmod>
+    <lastmod>2023-08-02T19:55:54.633Z</lastmod>
   </url>
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/posts/character-level-language-model/index.html</loc>
-    <lastmod>2023-07-30T21:39:42.320Z</lastmod>
+    <lastmod>2023-08-02T19:55:53.901Z</lastmod>
   </url>
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/posts/generative-pretrained-transformer/index.html</loc>
-    <lastmod>2023-07-30T21:39:41.872Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/a-gentle-introduction-to-rnns/index.html</loc>
-    <lastmod>2023-07-30T21:39:41.236Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/convnext/index.html</loc>
-    <lastmod>2023-07-30T21:39:40.692Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/deepface-facial-recognizer/index.html</loc>
-    <lastmod>2023-07-30T21:39:40.088Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/making-a-blog/index.html</loc>
-    <lastmod>2023-07-30T21:39:39.368Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/100-papers-100-days/index.html</loc>
-    <lastmod>2023-07-30T21:39:38.764Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/gpt-three/index.html</loc>
-    <lastmod>2023-07-30T21:39:38.552Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/pytorch-function-classifier/index.html</loc>
-    <lastmod>2023-07-30T21:39:39.072Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/the-matrix-calculus-for-deep-learning/index.html</loc>
-    <lastmod>2023-07-30T21:39:39.824Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html</loc>
-    <lastmod>2023-07-30T21:39:40.432Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jax-bulbrook.quarto.pub/blog/posts/attention-is-all-you-need/index.html</loc>
-    <lastmod>2023-07-30T21:39:40.980Z</lastmod>
+    <lastmod>2023-08-02T19:55:53.429Z</lastmod>
   </url>
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/posts/classifying-simple-data/index.html</loc>
-    <lastmod>2023-07-30T21:39:41.644Z</lastmod>
+    <lastmod>2023-08-02T19:55:52.977Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/a-gentle-introduction-to-rnns/index.html</loc>
+    <lastmod>2023-08-02T19:55:51.997Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/pytorch/index.html</loc>
+    <lastmod>2023-08-02T19:55:51.473Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html</loc>
+    <lastmod>2023-08-02T19:55:50.961Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/the-matrix-calculus-for-deep-learning/index.html</loc>
+    <lastmod>2023-08-02T19:55:50.353Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/pytorch-function-classifier/index.html</loc>
+    <lastmod>2023-08-02T19:55:49.825Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/gpt-three/index.html</loc>
+    <lastmod>2023-08-02T19:55:49.289Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/100-papers-100-days/index.html</loc>
+    <lastmod>2023-08-02T19:55:49.505Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/making-a-blog/index.html</loc>
+    <lastmod>2023-08-02T19:55:50.137Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/deepface-facial-recognizer/index.html</loc>
+    <lastmod>2023-08-02T19:55:50.589Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/convnext/index.html</loc>
+    <lastmod>2023-08-02T19:55:51.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/attention-is-all-you-need/index.html</loc>
+    <lastmod>2023-08-02T19:55:51.741Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/makemore-from-scratch/index.html</loc>
+    <lastmod>2023-08-02T19:55:52.509Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jax-bulbrook.quarto.pub/blog/posts/rwkv/index.html</loc>
+    <lastmod>2023-08-02T19:55:53.189Z</lastmod>
   </url>
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/posts/gpt-two/index.html</loc>
-    <lastmod>2023-07-30T21:39:42.112Z</lastmod>
+    <lastmod>2023-08-02T19:55:53.665Z</lastmod>
   </url>
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/posts/micrograd-from-scratch/index.html</loc>
-    <lastmod>2023-07-30T21:39:42.564Z</lastmod>
+    <lastmod>2023-08-02T19:55:54.401Z</lastmod>
   </url>
   <url>
     <loc>https://jax-bulbrook.quarto.pub/blog/about.html</loc>
-    <lastmod>2023-07-30T21:39:42.964Z</lastmod>
+    <lastmod>2023-08-02T19:55:54.825Z</lastmod>
   </url>
 </urlset>

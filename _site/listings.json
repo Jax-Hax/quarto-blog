@@ -2,6 +2,9 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/makemore-from-scratch/index.html",
+      "/posts/pytorch/index.html",
+      "/posts/rwkv/index.html",
       "/posts/a-gentle-introduction-to-rnns/index.html",
       "/posts/character-level-language-model/index.html",
       "/posts/gpt-three/index.html",

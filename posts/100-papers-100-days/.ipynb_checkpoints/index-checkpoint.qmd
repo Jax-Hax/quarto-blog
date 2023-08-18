@@ -1,9 +1,0 @@
----
-title: "100 Papers in 100 Days"
-author: "Jax Bulbrook"
-date: "2023-07-17"
-categories: [100-papers]
----
-
-# A paper a day for 100 days (7/17-10/25)
-This is a challenge I am setting in order to keep up with the latest research. New models and papers are coming out multiple times per day, and I feel like I have been falling behind. This challenge will hopefully keep me motivated to read a paper every single day, or two for a day if I miss one for any reason. By the end I hope to have a deeper understanding of the Machine Learning world and the Academia world, and hope to be able to implement some papers on my own. I will publish a summary of every paper I read here, and it should allow me to stay accountable. The first one is already up!

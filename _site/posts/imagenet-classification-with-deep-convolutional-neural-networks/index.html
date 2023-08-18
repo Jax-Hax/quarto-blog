@@ -9,7 +9,7 @@
 <meta name="author" content="Jax Bulbrook">
 <meta name="dcterms.date" content="2023-07-18">
 
-<title>Blog - Day 1 - ImageNet Classification with Deep Convolutional Neural Networks</title>
+<title>Blog - ImageNet Classification with Deep Convolutional Neural Networks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -142,9 +142,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Day 1 - ImageNet Classification with Deep Convolutional Neural Networks</h1>
+      <h1 class="title">ImageNet Classification with Deep Convolutional Neural Networks</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">100-papers</div>
+                <div class="quarto-category">project</div>
               </div>
                   </div>
   </div>
@@ -180,20 +180,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="summary" class="level1">
-<h1>Summary</h1>
-<p>They trained a convolutional neural network to identify ImageNet with state of the art results. The model consists of 5 convolutional layers, and then 3 feed-forward layers, with maxpooling and response-normalization layers in between. The main problems were overfitting and runtime, which were solved using data augmentation and ReLU Nonlinearity.</p>
-</section>
-<section id="takeaway" class="level1">
-<h1>Takeaway</h1>
-<p>I need to understand how to implement a custom model like this. I am taking the FastAI course, so I thought I knew what I was doing, but I need a deeper understanding. I think I am going to just do PyTorch for a while to learn the fundamentals, and maybe try to recreate this model on a smaller scale. Convolutional models are very interesting, I wonder if they work for NLP as well. I also wonder if there is a better way to make hyper-parameters. Maybe training a model to predict hyperparameters would be a good idea.</p>
-</section>
-<section id="other-research" class="level1">
-<h1>Other research</h1>
-<p>I need to study the math side more, as I didn’t understand the equations very easily. I am going to take a calculus course then a linear algebra course to familiarize myself. I also want to learn about Fisher Vectors, eigenvectors, and principal component analysis. Learning about other optimization methods rather than SGD, like Adam, sounds interesting as well.</p>
-</section>
-<section id="my-attempt-to-implement-it-not-fully-trained-just-a-smaller-dataset-called-cifar-10" class="level1">
-<h1>My attempt to implement it (not fully trained, just a smaller dataset called CIFAR 10)</h1>
 <section id="first-portion-learning-via-just-fashionmnist.-skip-this-i-am-just-including-it-to-show-beginners-that-i-too-dont-know-what-im-doing" class="level2">
 <h2 class="anchored" data-anchor-id="first-portion-learning-via-just-fashionmnist.-skip-this-i-am-just-including-it-to-show-beginners-that-i-too-dont-know-what-im-doing">First portion, learning via just FashionMNIST. Skip this, I am just including it to show beginners that I too don’t know what I’m doing</h2>
 <div class="cell" data-tags="[]" data-execution_count="5">
@@ -356,7 +342,6 @@ Shape of y: torch.Size([64]) torch.int64</code></pre>
 </div>
 <section id="i-tried-but-i-couldnt-figure-out-why-two-matrices-of-the-same-size-couldnt-be-multipled.-i-just-moved-on-as-i-had-what-i-needed-anyway." class="level4">
 <h4 class="anchored" data-anchor-id="i-tried-but-i-couldnt-figure-out-why-two-matrices-of-the-same-size-couldnt-be-multipled.-i-just-moved-on-as-i-had-what-i-needed-anyway.">I tried, but I couldn’t figure out why two matrices of the same size couldn’t be multipled. I just moved on as I had what I needed anyway.</h4>
-</section>
 </section>
 </section>
 <section id="training-on-cifar-10-pytorch-default-convnet" class="level1">

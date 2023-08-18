@@ -2,24 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/makemore-from-scratch/index.html",
-      "/posts/pytorch/index.html",
-      "/posts/rwkv/index.html",
-      "/posts/a-gentle-introduction-to-rnns/index.html",
-      "/posts/character-level-language-model/index.html",
-      "/posts/gpt-three/index.html",
-      "/posts/gpt-two/index.html",
-      "/posts/micrograd-from-scratch/index.html",
-      "/posts/generative-pretrained-transformer/index.html",
-      "/posts/deepface-facial-recognizer/index.html",
-      "/posts/the-matrix-calculus-for-deep-learning/index.html",
-      "/posts/convnext/index.html",
-      "/posts/visualizing-convnets/index.html",
       "/posts/attention-is-all-you-need/index.html",
       "/posts/pytorch-function-classifier/index.html",
       "/posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html",
       "/posts/classifying-simple-data/index.html",
-      "/posts/100-papers-100-days/index.html",
       "/posts/making-a-blog/index.html"
     ]
   }

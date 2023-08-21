@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Jax Bulbrook">
-<meta name="dcterms.date" content="2023-07-17">
 
-<title>Blog - Getting started with a Quarto blog</title>
+<title>Blog – index</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -105,38 +103,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Getting started with a Quarto blog</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">tutorial</div>
-              </div>
-                  </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>Jax Bulbrook </p>
-            </div>
-    </div>
-      
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">July 17, 2023</p>
-      </div>
-    </div>
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
@@ -146,72 +113,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>The best way to stay motivated during your journey into learning to code (or anything really) is to tell people about it. Keep yourself accountable. Editing youtube videos may be too much for you (like it is for me) so I recommend blogging. Not just a simple Medium blog, though, although if that’s all you need then go right ahead. This is blogging specifically for coding, so you can show off the actual code and its results, allowing anyone to see how you did what you did.</p>
-<p>If you need convincing, take a look at <a href="https://medium.com/@racheltho/why-you-yes-you-should-blog-7d2544ac1045">this article by Rachel Thomas</a></p>
-<p>Now, onto how to do so. This is assuming you have a personal computer that you want to run your blog on, with no experience or coding tools installed.</p>
-<p>We are going to use Jupyter Labs with Quarto for the actual articles.</p>
-<section id="installing-git" class="level1">
-<h1>Installing Git</h1>
-<p>Git is a version control system, so that if your computer breaks you have all of your code backed up to the cloud. We are going to use it with Github. You should already have it if you use Linux, but if you use Windows you are going to have to set up Windows Subsystem for Linux. You can run normal Windows with <a href="https://gitforwindows.org/">Git for Windows</a> if you really want to, but most of this tutorial won’t work for you, and you will have a lot of troubles later on. To install WSL, go to 31:29 on <a href="https://course.fast.ai/Lessons/lesson2.html">Lesson 2 of the FastAI course</a>, they have a good tutorial on how to do it.</p>
-</section>
-<section id="installing-python-with-mamba" class="level1">
-<h1>Installing Python with Mamba</h1>
-<p>We are going to use fastsetup, an easy way to get your computer set up for programming with Python. The <a href="https://github.com/fastai/fastsetup/blob/master/setup-conda.sh">setup-conda.sh file</a> shown here is what we will use to download everything. To get some experience with Git, try cloning the repository on your own. For some help, here are the commands:</p>
-<pre><code>sudo apt update &amp;&amp; sudo apt -y install git
-git clone https://github.com/fastai/fastsetup.git
-cd fastsetup
-sudo ./setup-conda.sh
-# optionally, for installing the FastAI library and other things like PyTorch
-mamba install -c fastchan fastai</code></pre>
-<p>If you want the full install for Ubuntu Linux, you can also read the README of the repository.</p>
-<section id="installing-jupyter-labs-and-quarto" class="level3">
-<h3 class="anchored" data-anchor-id="installing-jupyter-labs-and-quarto">Installing Jupyter Labs and Quarto</h3>
-<p><code>mamba install -c conda-forge jupyterlab</code> To install Quarto, go to <a href="https://quarto.org/docs/get-started/">their download page</a> and download the correct version and run it.</p>
-</section>
-</section>
-<section id="setting-up-the-blog" class="level1">
-<h1>Setting up the blog</h1>
-<p>Go to the terminal, and navigate to the location you want to put the Blog in via <code>cd</code>. I’m simply in the Documents folder. Then, to make a new Quarto project, run <code>quarto create-project Blog --type website:blog</code>. Now you should see a Blog folder if you run <code>ls</code>. To see the blog itself, run <code>quarto preview Blog</code> and it should pop up in a new window. That terminal is now being used to run quarto, so open up another one and navigate to the Blog folder (go into it this time). Run the command <code>jupyter lab</code> to open up your IDE. You should now see the whole folder in the Jupyter Lab Development Environment. Here you can change some of the Quarto files, such as <code>about.qmd</code>, <code>index.qmd</code>, etc. I have the superhero theme set in `_quarto.yml’.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="jupyter.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Jupyter Lab</figcaption>
-</figure>
-</div>
-<p>To make it look a little bit better, we need to change some default settings. Go to the Plugins tab (the puzzle icon on the left sidebar) and search git. Download the jupyterlab git plugin. Also look up and install LSP (language server protocol) and quarto.</p>
-<p>To change to dark mode, go to Settings in the top navbar, then Theme, then choose Dark. Now, you need to restart Jupyter Lab to make the plugins go into effect. Go to File, then Shut down at the bottom. Run the same commands as above to open Jupyter Lab back up. You should now see roughly the same screen shown above, without the two tabs.</p>
-</section>
-<section id="setting-up-github" class="level1">
-<h1>Setting up GitHub</h1>
-<p>You will need a Github account to back up the Blog. Go ahead and create one on their website, setting up a profile as usual. After, make a new repository called Blog (or whatever else). Do not add a README or license or anything yet.</p>
-<p>In the JupyterLab main screen, make a new tab and use Terminal (shown in Other). In that, run the following commands, replacing information as needed:</p>
-<pre><code>git config ‒global user.email {your Github email}
-git config user.name {your Github name}
-git init -b main
-git add .
-git commit -m "added blog files"
-git remote add origin https://github.com/{your profile name}/blog.git 
-git push ‒set-upstream origin main</code></pre>
-<p>You should now be able to add new files and commit them to Github from the sidebar. Now change some default settings with Git to make it easier to push your changes. Go to Advanced Settings Editor (Ctrl comma), then Git, then change simple staging flag to true and trigger push on commit to true.</p>
-</section>
-<section id="publishing-the-blog" class="level1">
-<h1>Publishing the Blog</h1>
-<p>If you just want it for yourself, you can stop the tutorial here and start editing. Use a Quarto guide online to do so. If you do want to publish it, there are two options. Well, there are many, but these are the top two in my opinion.</p>
-<section id="the-simplest-publishing-to-quarto-pub" class="level3">
-<h3 class="anchored" data-anchor-id="the-simplest-publishing-to-quarto-pub">The simplest, publishing to Quarto Pub</h3>
-<p>This one is for people with no web development experience. Go to <a href="https://quartopub.com/">Quarto Pub</a>, sign up, and choose a username. Now, go back to the terminal, navigate to the blog directory, and run <code>quarto publish</code> once you are ready for you blog to hit the world. It will ask you to put in some authentication information the first time, and then you are done!</p>
-</section>
-<section id="the-hard-option-making-your-own-website" class="level3">
-<h3 class="anchored" data-anchor-id="the-hard-option-making-your-own-website">The hard option, making your own website</h3>
-<p>I won’t go too deep into this, as you should be experienced with Web Dev to do this option. I suggest using something like Vercel to deploy a simple static application with all of the prerendered files you get using <code>quarto render</code>.</p>
-</section>
-</section>
-<section id="you-are-done" class="level1">
-<h1>You are done!</h1>
-<p>If you successfully made it through, please email me at jaxbulbrook@gmail.com and I will take a look at your blog! For ideas to post, I suggest doing a 100 days of X challenge (I am personally reading 100 papers in 100 days) or documenting your coding journey with weekly devlogs. Enjoy!</p>
 
-
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

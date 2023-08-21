@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/cs-to-ml-p1/index.html",
       "/posts/attention-is-all-you-need/index.html",
       "/posts/pytorch-function-classifier/index.html",
       "/posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html",

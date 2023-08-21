@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jax Bulbrook">
+<meta name="dcterms.date" content="2023-08-21">
 
-<title>Blog - My Posts</title>
+<title>Blog - Computer Science to Machine Learning - An intuitive understanding of ML for coders (Part 1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -61,50 +61,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Blog</span>
     </a>
   </div>
@@ -115,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
+    <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">About Jax Bulbrook</span></a>
   </li>  
   <li class="nav-item compact">
@@ -138,253 +107,76 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">My Posts</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Computer Science to Machine Learning - An intuitive understanding of ML for coders (Part 1)</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">tutorial</div>
+              </div>
+                  </div>
   </div>
     
   
   <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Jax Bulbrook </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 21, 2023</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(6)</span></div><div class="category" data-category="paper">paper <span class="quarto-category-count">(1)</span></div><div class="category" data-category="project">project <span class="quarto-category-count">(3)</span></div><div class="category" data-category="tutorial">tutorial <span class="quarto-category-count">(2)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<p>This tutorial is meant to give an intuitive explanation of machine learning for those that are already familiar with computer science, specifically Python and OOP. If you aren’t, I would highly suggest learning to code before learning AI, as it will be very challenging otherwise. Check out the amazing <a href="https://100daysofpython.dev/">100 Days of Python Course</a> to do so. But this mini-course assumes no previous knowledge of the field. In fact, I was in the same position roughly a year ago, having gotten interested in ML with the release of ChatGPT. I couldn’t possibly imagine how they are able to program so many different outputs, or how they teach a computer to do it for them. Roughly a year later and my path has deviated several times, as there are so many resources out there it’s hard to keep track. My list of links, videos, and books to read is over 500, and that is unsustainable for someone trying to transition from CS to the newly popular (and high paying) ML. I’m not at all good at math or theory, I prefer using code as an example, but in some cases there is a need to understand the underlying theory, for which I apologize in advance.</p>
+</section>
+<section id="course-outline" class="level1">
+<h1>Course outline</h1>
+<p>I am going to be documenting the various ideas on the journey to a career in Machine Learning, so this will probably be ongoing, but for now here is what you will learn:</p>
+<ol type="1">
+<li>An intuitive understanding of a neural network (this post)</li>
+<li>Implementing a simple digit classifier with PyTorch</li>
+<li>Behind the scenes: How Backpropogation works</li>
+<li>A guide to the confusing aspects of the Transformer</li>
+<li>How Stable Diffusion works</li>
+<li>Tips to make your model better (dropout, layer norm, nonlinearity, etc)</li>
+</ol>
+</section>
+<section id="what-is-a-neural-network" class="level1">
+<h1>What is a neural network?</h1>
+<p>Neural networks are simply used to refer to a complex mathematical expression. It is a way to represent any function with a series of “parameters”. For now, you can think of it as a black box, where you pass in information and get out the correct information. This neural network can have it’s complexity increased or decreased, depending on the complexity of the relationship it needs to model. The reason it’s so special, and the reason everyone cares so much about it, is that its a <em>universal function approximator</em>. So it could graph something as simple as x^2 or sin(x), yes, but it can also be expanded to anything you can put into a series of numbers.</p>
+<p>So what if you need to figure out if an image is a cat or a dog? Just convert each pixel to a number going from 0 (white) to 1 (black), and feed that in, to get the answer. We could manually figure this out, by writing some incredibly long function with thousands of different variables, but mathematicians would very quickly get tired of that. And how do you figure out what the numbers are? It makes no intuitive sense to us, but computers don’t need intuition. The beauty of a neural network is that you can give it a bunch of data it needs to classify along with the result, and it will figure out how to do that. It does need some way of figuring out if it’s right or wrong, though, or else it would just spit out random answers forever and think it’s getting everything write.</p>
+<p>But how does this magical function approximator work? It’s actually modelled after our own brains, which may be why it can now do many of the same things we can do. Here is a simple graph, one that can classify someone as male or female given their height and weight: <img src="simple-nn.png" class="img-fluid" alt="A simple neural net"> It looks a bit confusing at first, but it’s actually very simple. You start with an input layer, with your two numbers you are feeding it (weight and height). There is no need to transform these from our language (words) computer language (numbers) since they already are! Then, you have what’s called a hidden layer. This goes in between the input and output layer, and it is used to give the model a bit more context. If we were only allowed to have one layer, then the weight and height would have to have some number that directly turns them into gender (1 or 0). It’s a bit more complicated than that, so you give the model one (or many) extra layers to process the information a bit better. One is enough, but when you get to image classifiers like ResNet, they have up to 50 layers!<br>
+To calculate h1 and h2, which is the data you then pass on as the new inputs to the next layer, you take some weights and a bias. In this case, the math for h1 would be <code>(weight*w1) + (height*w2) + b1</code>. If you aren’t a math person, that’s ok. You are basically taking the weight and height and multiplying them by some number to transform them more towards the number. In this case, the weight is probably in the triple digits, if in pounds, and the height is probably mid 50s in inches. This is a long way away from somehow changing it into a number from 0 to 1 for the gender, so we first need to multiply them by some number. In this case, it would be a very small number like 0.1 or even 0.01, which would turn 100 into 10 or 1 respectively. This is a bit closer to our number, which is why we use weights. Then we need some way to also give it the information from the height, which is calculated in the same way. We can add them together, but that may still not be enough (or too much). We also add a bias, which is just some set number, to make the numbers more standardized. In this case, the weight and height put together would proably go over 1, so the bias could be something like -1 to bring it back to a range of 0-1. And that’s a basic Neural Network!</p>
+</section>
+<section id="how-would-this-work-in-a-practical-sense" class="level1">
+<h1>How would this work in a practical sense?</h1>
+<p>We are now going to be introduced into the power of PyTorch, one of many machine learning frameworks for Python. Most of them are roughly the same, so it doesn’t matter what you start with, but this one is most popular in AI research and is growing in careers as well. You can follow along with this tutorial via <a href="">this Jupyter Notebook</a></p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="tutorial" data-listing-date-sort="1692590400000" data-listing-file-modified-sort="1692631893040" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6">
-<div class="thumbnail">
-<p><a href="./posts/cs-to-ml-p1/index.html"> <p class="card-img-top"><img src="posts/cs-to-ml-p1/simple-nn.png" alt="A simple neural net"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/cs-to-ml-p1/index.html">
-<h3 class="no-anchor listing-title">
-Computer Science to Machine Learning - An intuitive understanding of ML for coders (Part 1)
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
-tutorial
-</div>
-</div>
-<a href="./posts/cs-to-ml-p1/index.html">
-<div class="listing-description">
-This tutorial is meant to give an intuitive explanation of machine learning for those that are already familiar with computer…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/cs-to-ml-p1/index.html">
-<div class="listing-date">
-Aug 21, 2023
-</div>
-<div class="listing-author">
-Jax Bulbrook
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="paper" data-listing-date-sort="1689739200000" data-listing-file-modified-sort="1692398841774" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<div class="thumbnail">
-<p><a href="./posts/attention-is-all-you-need/index.html"> <p class="card-img-top"><img src="posts/attention-is-all-you-need/Multi-Head-Attention.png" alt="Multi Head Attention"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/attention-is-all-you-need/index.html">
-<h3 class="no-anchor listing-title">
-Attention is all you need
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('paper'); return false;">
-paper
-</div>
-</div>
-<a href="./posts/attention-is-all-you-need/index.html">
-<div class="listing-description">
-This paper was groundbreaking, introducing the Transformer model, which replaced the Recurrent Neural Network and Convolutional Neural Network.
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/attention-is-all-you-need/index.html">
-<div class="listing-date">
-Jul 19, 2023
-</div>
-<div class="listing-author">
-Jax Bulbrook
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="project" data-listing-date-sort="1689652800000" data-listing-file-modified-sort="1692398741800" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
-<div class="thumbnail">
-<p><a href="./posts/pytorch-function-classifier/index.html"> <p class="card-img-top"><img src="posts/pytorch-function-classifier/index_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/pytorch-function-classifier/index.html">
-<h3 class="no-anchor listing-title">
-Math function classifier with Pytorch
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('project'); return false;">
-project
-</div>
-</div>
-<a href="./posts/pytorch-function-classifier/index.html">
-<div class="listing-description">
-FUTURE ME: This project was kinda a failure, I wouldn’t try to follow it The goal of this project is to be able to type in a math function and…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/pytorch-function-classifier/index.html">
-<div class="listing-date">
-Jul 18, 2023
-</div>
-<div class="listing-author">
-Jax Bulbrook
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="project" data-listing-date-sort="1689652800000" data-listing-file-modified-sort="1692398820514" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<div class="thumbnail">
-<p><a href="./posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html"> <p class="card-img-top"><img src="posts/imagenet-classification-with-deep-convolutional-neural-networks/index_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html">
-<h3 class="no-anchor listing-title">
-ImageNet Classification with Deep Convolutional Neural Networks
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('project'); return false;">
-project
-</div>
-</div>
-<a href="./posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html">
-<div class="listing-description">
-The papers implemeted techniques are all already in there, not…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/imagenet-classification-with-deep-convolutional-neural-networks/index.html">
-<div class="listing-date">
-Jul 18, 2023
-</div>
-<div class="listing-author">
-Jax Bulbrook
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="project" data-listing-date-sort="1689652800000" data-listing-file-modified-sort="1692398632473" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
-<div class="thumbnail">
-<p><a href="./posts/classifying-simple-data/index.html"> <p class="card-img-top"><img src="posts/classifying-simple-data/index_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/classifying-simple-data/index.html">
-<h3 class="no-anchor listing-title">
-Using a neural network to predict poisonous fruit
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('project'); return false;">
-project
-</div>
-</div>
-<a href="./posts/classifying-simple-data/index.html">
-<div class="listing-description">
-FUTURE ME: this post was very bad, I’m leaving it up for historical reasons but don’t try to follow it!
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/classifying-simple-data/index.html">
-<div class="listing-date">
-Jul 18, 2023
-</div>
-<div class="listing-author">
-Jax Bulbrook
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="tutorial" data-listing-date-sort="1689566400000" data-listing-file-modified-sort="1689602129309" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6">
-<div class="thumbnail">
-<p><a href="./posts/making-a-blog/index.html"> <p class="card-img-top"><img src="posts/making-a-blog/jupyter.jpg"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/making-a-blog/index.html">
-<h3 class="no-anchor listing-title">
-Getting started with a Quarto blog
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
-tutorial
-</div>
-</div>
-<a href="./posts/making-a-blog/index.html">
-<div class="listing-description">
-The best way to stay motivated during your journey into learning to code (or anything really) is to tell people about it. Keep yourself accountable. Editing youtube videos…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/making-a-blog/index.html">
-<div class="listing-date">
-Jul 17, 2023
-</div>
-<div class="listing-author">
-Jax Bulbrook
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
